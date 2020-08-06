@@ -1,0 +1,50 @@
+plugins {
+	id 'org.springframework.boot' version '2.2.5.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+	id 'java'
+	id 'io.freefair.lombok' version '5.0.0-rc4'
+	id 'jacoco'
+}
+
+group = 'com.fuel50'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+configurations {
+	developmentOnly
+	runtimeClasspath {
+		extendsFrom developmentOnly
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+//	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.liquibase:liquibase-core'
+	implementation 'com.sendgrid:sendgrid-java:4.6.2'
+	implementation 'io.springfox:springfox-swagger2:2.9.2'
+	implementation 'io.springfox:springfox-bean-validators:2.9.2'
+	implementation 'io.springfox:springfox-swagger-ui:2.9.2'
+	implementation 'org.jsoup:jsoup:1.11.3'
+	compile 'com.fasterxml.jackson.core:jackson-databind:2.9.7'
+	compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.7'
+	compile 'com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.9.7'
+	compile 'com.vladmihalcea:hibernate-types-52:2.2.2'
+	testCompile 'org.testcontainers:testcontainers:1.12.5'
+	testCompile 'org.testcontainers:postgresql:1.14.3'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	runtimeOnly 'org.postgresql:postgresql:42.1.4'
+	testImplementation('org.springframework.boot:spring-boot-starter-test')
+	implementation 'junit:junit:4.12'
+}
+
+test {
+	useJUnitPlatform()
+}
