@@ -152,3 +152,7 @@ I have to differentiate the severity:
 
 Newrelic APM integration.
 
+- Testing
+
+MVC controller tests and persistence layer integration tests are missing.
+
