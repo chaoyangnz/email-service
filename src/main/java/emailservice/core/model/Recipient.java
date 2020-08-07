@@ -1,11 +1,13 @@
 package emailservice.core.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Getter
 @Setter
 @Accessors(chain = true)

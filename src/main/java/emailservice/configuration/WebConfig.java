@@ -1,10 +1,7 @@
 package emailservice.configuration;
 
-import com.sendgrid.SendGrid;
-import emailservice.entrypoint.ApiKeyAuthFilter;
+import emailservice.entrypoint.rest.ApiKeyAuthFilter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,9 +15,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebMvc
 @RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
-
-    @Value("${emailservice.sendgrid.apiKey}")
-    private String sendGridApiKey;
 
     private final ApiKeyAuthFilter apiKeyAuthFilter;
 
@@ -49,10 +43,5 @@ public class WebConfig implements WebMvcConfigurer {
         registrationBean.addUrlPatterns("/email");
 
         return registrationBean;
-    }
-
-    @Bean
-    public SendGrid sendGrid() {
-        return new SendGrid(sendGridApiKey);
     }
 }

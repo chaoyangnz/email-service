@@ -1,0 +1,19 @@
+{
+  "subject": "test email",
+  "body": {
+    "type": "HTML",
+    "content": "<strong>awesome</strong>"
+  },
+  "to": [
+  ],
+  "cc": [
+    {
+      "name": "Chao",
+      "email": "chao@yang.to"
+    }],
+  "bcc": [
+    {
+      "name": "Hacky",
+      "email": "hacky@example.com"
+    }]
+}

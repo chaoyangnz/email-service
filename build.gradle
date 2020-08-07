@@ -41,8 +41,9 @@ dependencies {
 	testCompile 'org.testcontainers:postgresql:1.14.3'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'org.postgresql:postgresql:42.1.4'
-	testImplementation('org.springframework.boot:spring-boot-starter-test')
-	implementation 'junit:junit:4.12'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'junit:junit:4.12'
+	testImplementation 'io.rest-assured:rest-assured:3.3.0'
 }
 
 test {

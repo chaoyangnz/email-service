@@ -1,0 +1,20 @@
+{
+  "subject": "test email",
+  "body": {
+    "type": "HTML",
+    "content": "<strong>awesome</strong>",
+    "ignorableFiledInBody": "blablablababl"
+  },
+  "cc": [
+    {
+      "name": "Chao",
+      "email": "chao@yang.to",
+      "ignorableFiledInRecipient": "blablablabablbb"
+    }],
+  "to": [
+    {
+      "name": "Elvin",
+      "email": "elvin@yang.to"
+    }],
+  "ignorableFiled": "blablablab"
+}
