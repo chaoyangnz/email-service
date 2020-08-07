@@ -1,6 +1,6 @@
 package emailservice.core.usercase;
 
-import emailservice.core.exception.ExternalAccessException;
+import emailservice.core.exception.EnrichmentDataAccessException;
 import emailservice.core.model.Body;
 import emailservice.core.model.BodyType;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ public abstract class AbstractBodyEnricher implements BodyEnricher {
             String data = enrichmentDataProvider.getEnrichmentData();
             body.setContent(doEnrich(content, data));
             return true;
-        } catch (ExternalAccessException ex) {
+        } catch (EnrichmentDataAccessException ex) {
             log.warn(ex.getMessage(), ex);
             // non-critical, continue the flow
             return false;

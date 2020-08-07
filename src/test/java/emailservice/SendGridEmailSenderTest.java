@@ -4,7 +4,7 @@ import com.sendgrid.Method;
 import com.sendgrid.Request;
 import com.sendgrid.Response;
 import com.sendgrid.SendGrid;
-import emailservice.core.exception.ExternalAccessException;
+import emailservice.core.exception.EmailSenderException;
 import emailservice.core.model.Body;
 import emailservice.core.model.BodyType;
 import emailservice.core.model.Message;
@@ -88,7 +88,7 @@ public class SendGridEmailSenderTest {
         when(sendGrid.api(requestCaptor.capture())).thenThrow(IOException.class);
         //when & then
         assertThatCode(() -> sendGridEmailSender.send(message))
-            .isInstanceOf(ExternalAccessException.class);
+            .isInstanceOf(EmailSenderException.class);
 
         Request request = requestCaptor.getValue();
         assertThat(request.getEndpoint()).isEqualTo(sendGridSendEndpoint);
@@ -103,7 +103,7 @@ public class SendGridEmailSenderTest {
         doReturn(response).when(sendGrid).api(requestCaptor.capture());
         //when & then
         assertThatCode(() -> sendGridEmailSender.send(message))
-            .isInstanceOf(ExternalAccessException.class);
+            .isInstanceOf(EmailSenderException.class);
 
         Request request = requestCaptor.getValue();
         assertThat(request.getEndpoint()).isEqualTo(sendGridSendEndpoint);

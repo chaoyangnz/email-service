@@ -1,6 +1,6 @@
 package emailservice;
 
-import emailservice.core.exception.ExternalAccessException;
+import emailservice.core.exception.EmailSenderException;
 import emailservice.core.model.Body;
 import emailservice.core.model.BodyType;
 import emailservice.core.model.Message;
@@ -135,10 +135,10 @@ public class EmailServiceTest {
         when(htmlBodyEnricher.enrich(bodyArgumentCaptor.capture())).thenReturn(true);
 //        doNothing().when(recipientFilter).filter(recipientsCaptor.capture());
         when(processRecordDataProvider.save(processRecordCaptor.capture())).thenReturn(processRecord);
-        when(emailSender.send(messageCaptor.capture())).thenThrow(ExternalAccessException.class);
+        when(emailSender.send(messageCaptor.capture())).thenThrow(EmailSenderException.class);
         //when
         assertThatCode(() -> emailService.send(message, true))
-            .isInstanceOf(ExternalAccessException.class);
+            .isInstanceOf(EmailSenderException.class);
         //then
         assertThat(processRecord.getState()).isEqualTo(ProcessState.DISPATCH_FAILED);
         verify(emailSender, times(1)).send(any(Message.class));

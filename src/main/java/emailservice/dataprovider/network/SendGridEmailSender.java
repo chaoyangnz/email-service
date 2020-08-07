@@ -10,8 +10,8 @@ import com.sendgrid.helpers.mail.objects.Email;
 import com.sendgrid.helpers.mail.objects.MailSettings;
 import com.sendgrid.helpers.mail.objects.Personalization;
 import com.sendgrid.helpers.mail.objects.Setting;
+import emailservice.core.exception.EmailSenderException;
 import emailservice.core.usercase.EmailSender;
-import emailservice.core.exception.ExternalAccessException;
 import emailservice.core.model.Recipient;
 import emailservice.core.model.Message;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
+import static java.lang.String.format;
 
 @Service
 @Slf4j
@@ -64,11 +65,13 @@ public class SendGridEmailSender implements EmailSender {
                 return response.getHeaders().get(MESSAGE_ID_HEADER);
             } else {
                 // wrap the exception to our application exception
-                throw new ExternalAccessException(ExternalAccessException.API_SENDGRID, "Non-2xx response", null);
+                throw new EmailSenderException(
+                    format("Non-2xx response: %s %s", response.getStatusCode(), response.getBody()),
+                    null);
             }
         } catch (IOException ex) {
             // wrap the exception to our application exception
-            throw new ExternalAccessException(ExternalAccessException.API_SENDGRID, ex.getMessage(), ex);
+            throw new EmailSenderException(ex.getMessage(), ex);
         }
     }
 
@@ -97,6 +100,8 @@ public class SendGridEmailSender implements EmailSender {
     }
 
     private List<Email> buildRecipients(List<Recipient> recipients) {
-        return recipients.stream().map(recipient -> new Email(recipient.getEmail(), recipient.getName())).collect(Collectors.toList());
+        return recipients.stream().map(recipient ->
+            new Email(recipient.getEmail(), recipient.getName()))
+            .collect(Collectors.toList());
     }
 }

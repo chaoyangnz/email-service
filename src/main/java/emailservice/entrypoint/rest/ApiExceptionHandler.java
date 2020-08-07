@@ -1,7 +1,8 @@
 package emailservice.entrypoint.rest;
 
 import emailservice.core.exception.AuthorizationException;
-import emailservice.core.exception.ExternalAccessException;
+import emailservice.core.exception.EmailSenderException;
+import emailservice.core.exception.EnrichmentDataAccessException;
 import emailservice.core.model.GenericError;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
@@ -21,7 +22,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler({ ExternalAccessException.class, DataAccessException.class})
+    @ExceptionHandler({ EmailSenderException.class, EnrichmentDataAccessException.class, DataAccessException.class})
     protected GenericError handleException(Exception ex) {
         GenericError errorResponse = new GenericError()
                 .setMessage(ex.getMessage());

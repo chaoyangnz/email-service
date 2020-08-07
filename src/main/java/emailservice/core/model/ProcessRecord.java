@@ -10,9 +10,9 @@ import java.time.Instant;
 @Accessors(chain = true)
 public class ProcessRecord {
     private Long id;
-    private String externalMessageId;
     private Message originalMessage;
     private Message message;
+    private String externalMessageId;
     private ProcessState state;
     private Instant createdAt;
 }

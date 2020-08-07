@@ -1,6 +1,6 @@
 package emailservice;
 
-import emailservice.core.exception.ExternalAccessException;
+import emailservice.core.exception.EnrichmentDataAccessException;
 import emailservice.dataprovider.network.OpenWeatherDataProvider;
 import emailservice.dataprovider.network.dto.OpenWeatherData;
 import emailservice.dataprovider.network.dto.OpenWeatherResponse;
@@ -79,13 +79,13 @@ public class OpenWeatherDataProviderTest {
     public void given_openweather_responds_with_error_then_retrieve_failed() {
         //given
         when(responseResponseEntity.getStatusCode()).thenReturn(HttpStatus.SERVICE_UNAVAILABLE);
-        when(responseResponseEntity.getBody()).thenReturn(null);
+//        when(responseResponseEntity.getBody()).thenReturn(null);
         when(restTemplate.getForEntity(endpointCaptor.capture(), any(Class.class), uriVariablesCaptor.capture())).
             thenReturn(responseResponseEntity);
         //when
         assertThatCode(() -> openWeatherDataProvider.getEnrichmentData())
-            .isInstanceOf(ExternalAccessException.class)
-            .hasMessage("Weather not found")
+            .isInstanceOf(EnrichmentDataAccessException.class)
+            .hasMessage("Weather retrieval errored")
             .hasNoCause();
 
         //then

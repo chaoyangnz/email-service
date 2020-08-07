@@ -1,7 +1,7 @@
 package emailservice.dataprovider.network;
 
+import emailservice.core.exception.EnrichmentDataAccessException;
 import emailservice.core.usercase.EnrichmentDataProvider;
-import emailservice.core.exception.ExternalAccessException;
 import emailservice.dataprovider.network.dto.OpenWeatherData;
 import emailservice.dataprovider.network.dto.OpenWeatherResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -48,6 +48,6 @@ public class OpenWeatherDataProvider implements EnrichmentDataProvider {
         if (responseEntity.getStatusCode().is2xxSuccessful()) {
             return responseEntity.getBody();
         }
-        throw new ExternalAccessException(ExternalAccessException.API_OPENWEATHER, "Weather not found", null);
+        throw new EnrichmentDataAccessException("Weather retrieval errored", null);
     }
 }

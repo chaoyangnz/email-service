@@ -12,6 +12,8 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import javax.validation.Validation;
+import javax.validation.Validator;
 
 @Configuration
 @EnableWebMvc
@@ -24,5 +26,10 @@ public class AppConfig implements WebMvcConfigurer {
     @Bean
     public SendGrid sendGrid() {
         return new SendGrid(sendGridApiKey);
+    }
+
+    @Bean
+    public Validator validator() {
+        return Validation.buildDefaultValidatorFactory().getValidator();
     }
 }

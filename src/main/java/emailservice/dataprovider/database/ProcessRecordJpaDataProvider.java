@@ -1,5 +1,6 @@
 package emailservice.dataprovider.database;
 
+import emailservice.core.model.ProcessState;
 import emailservice.core.usercase.ProcessRecordDataProvider;
 import emailservice.core.model.ProcessRecord;
 import emailservice.dataprovider.database.entity.ProcessRecordEntity;
@@ -21,6 +22,10 @@ public class ProcessRecordJpaDataProvider implements ProcessRecordDataProvider {
 
     @Override
     public ProcessRecord save(ProcessRecord record) {
+        // never update an initial state.
+        if (record.getId() != null && record.getState() == ProcessState.ACCEPTED) {
+            return record;
+        }
         ProcessRecordEntity processRecordEntity = build(record);
         if (!enableDataPrivacy) {
             processRecordEntity.setMessage(record.getMessage());

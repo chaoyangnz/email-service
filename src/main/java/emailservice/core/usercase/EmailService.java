@@ -1,14 +1,13 @@
 package emailservice.core.usercase;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import emailservice.core.exception.ExternalAccessException;
-import emailservice.core.model.ProcessState;
+import com.rits.cloning.Cloner;
+import emailservice.core.exception.EmailSenderException;
 import emailservice.core.model.Message;
 import emailservice.core.model.ProcessRecord;
+import emailservice.core.model.ProcessState;
 import emailservice.core.model.Result;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import javax.transaction.Transactional;
 import java.time.Instant;
 import java.util.List;
 
@@ -27,7 +26,7 @@ public class EmailService {
         final List<BodyEnricher> bodyEnrichers,
         final RecipientFilter recipientFilter,
         final ProcessRecordDataProvider processRecordDataProvider
-    ) {
+        ) {
         this.enableFilter = enableFilter;
         this.emailSender = emailSender;
         this.bodyEnrichers = bodyEnrichers;
@@ -35,14 +34,23 @@ public class EmailService {
         this.processRecordDataProvider = processRecordDataProvider;
     }
 
-    @Transactional
     public Result send(Message message, boolean enrichBody) {
-        ProcessRecord processRecord = new ProcessRecord()
-            .setOriginalMessage(message)
-            .setState(ProcessState.ACCEPTED)
-            .setCreatedAt(Instant.now());
-        ProcessRecord savedProcessRecord = processRecordDataProvider.save(processRecord);
+        ProcessRecord processRecord = new ProcessRecord().setCreatedAt(Instant.now())
+            .setOriginalMessage(snapshot(message))
+            .setState(ProcessState.ACCEPTED);
+        ProcessRecord saveProcessRecord = processRecordDataProvider.save(processRecord);
 
+        try {
+            return doSend(message, enrichBody, saveProcessRecord);
+        } catch (EmailSenderException ex) {
+            saveProcessRecord.setState(ProcessState.DISPATCH_FAILED);
+            throw ex;
+        } finally {
+            processRecordDataProvider.save(saveProcessRecord);
+        }
+    }
+
+    private Result doSend(Message message, boolean enrichBody, ProcessRecord processRecord) {
         if (enrichBody) {
             bodyEnrichers.stream().anyMatch(bodyEnricher -> bodyEnricher.enrich(message.getBody()));
         }
@@ -51,16 +59,14 @@ public class EmailService {
             recipientFilter.filter(message.getCc());
             recipientFilter.filter(message.getBcc());
         }
-        try {
-            String messageId = emailSender.send(message);
-            savedProcessRecord.setMessage(message).setExternalMessageId(messageId).setState(ProcessState.DISPATCHED);
-            processRecordDataProvider.save(savedProcessRecord);
+        processRecord.setMessage(snapshot(message)).setState(ProcessState.TRANSFORMED);
 
-            return new Result().setId(savedProcessRecord.getId()).setSentAt(Instant.now());
-        } catch (ExternalAccessException ex) {
-            savedProcessRecord.setMessage(message).setState(ProcessState.DISPATCH_FAILED);
-            processRecordDataProvider.save(savedProcessRecord);
-            throw ex;
-        }
+        String messageId = emailSender.send(message);
+        processRecord.setExternalMessageId(messageId).setState(ProcessState.DISPATCHED);
+        return new Result().setId(processRecord.getId()).setSentAt(Instant.now());
+    }
+
+    private Message snapshot(Message message) {
+        return new Cloner().deepClone(message);
     }
 }

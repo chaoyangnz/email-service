@@ -3,6 +3,7 @@ package emailservice.core.usercase;
 import emailservice.core.model.ProcessRecord;
 
 public interface ProcessRecordDataProvider {
+
     /**
      * Save email processing record entry.
      *
