@@ -125,15 +125,22 @@ entity objects, and serve the domain objects as view objects. I think it is OK w
 
 A status check endpoint is needed, as the email delivery is an asynchronous operation. We have to query the delivery status with a message id.
 
-- Throttling / Debounce
+- Traffic throttling / debouncing
 
 We could have the capability to avoid too many traffics from a client in a short time.
 
 - Security
 
 I am only implementing a simple API key auth filter. To be more robust, Spring  Security can be enabled and 
-more sophisticated mechanism can be introduced, typically OAuth and client id + JWT based token with expiration.
+more sophisticated mechanism can be introduced, typically OAuth and client id + JWT based token which support:
+    - token lifecycle: generation, expiration, refresh
+    - client management
+    - more strong encryption.
+    
+- Versioning
 
+How to make our API backward compatibility when it is evolving 🤔
+    
 - Error handling
 
 Currently, I only handled successful and failed response from external APIs. The error
