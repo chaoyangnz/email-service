@@ -1,13 +1,13 @@
 package emailservice.configuration;
 
-import emailservice.entrypoint.rest.ApiKeyAuthFilter;
+import emailservice.entrypoint.rest.ApiKeyAuthInterceptor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -16,7 +16,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
 
-    private final ApiKeyAuthFilter apiKeyAuthFilter;
+    private final ApiKeyAuthInterceptor apiKeyAuthInterceptor;
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
@@ -34,14 +34,8 @@ public class WebConfig implements WebMvcConfigurer {
         return new RestTemplate();
     }
 
-    @Bean
-    public FilterRegistrationBean<ApiKeyAuthFilter> loggingFilter(){
-        FilterRegistrationBean<ApiKeyAuthFilter> registrationBean
-            = new FilterRegistrationBean<>();
-
-        registrationBean.setFilter(apiKeyAuthFilter);
-        registrationBean.addUrlPatterns("/email");
-
-        return registrationBean;
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(apiKeyAuthInterceptor).addPathPatterns("/email");
     }
 }

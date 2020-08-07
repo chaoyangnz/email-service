@@ -1,42 +1,27 @@
 package emailservice.entrypoint.rest;
 
 import emailservice.core.exception.AuthorizationException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
-/**
- * Simple Auth filter with API key verification.
- */
 @Service
-@RequiredArgsConstructor
-public class ApiKeyAuthFilter implements Filter {
+public class ApiKeyAuthInterceptor extends HandlerInterceptorAdapter {
+
     @Value("${emailservice.security.apiKey}")
     private String apiKey;
 
     @Override
-    public void doFilter(
-    ServletRequest request,
-    ServletResponse response,
-    FilterChain chain) throws IOException, ServletException {
-
-        HttpServletRequest req = (HttpServletRequest) request;
-        HttpServletResponse res = (HttpServletResponse) response;
-        String authorizationHeader = req.getHeader("Authorization");
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        String authorizationHeader = request.getHeader("Authorization");
         boolean authorised = !authorizationHeaderIsInvalid(authorizationHeader) && apiKeyVerified(authorizationHeader);
         if(!authorised) {
-            res.sendError(HttpStatus.UNAUTHORIZED.value());
+            throw new AuthorizationException("Authorization is missing or invalid");
         }
-        chain.doFilter(request, response);
+        return true;
     }
 
     private boolean authorizationHeaderIsInvalid(String authorizationHeader) {

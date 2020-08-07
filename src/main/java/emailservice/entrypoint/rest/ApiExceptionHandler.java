@@ -25,8 +25,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(AuthorizationException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    @ResponseBody
-    protected GenericError handleApiAuthorizationException(Exception ex) {
+    protected @ResponseBody GenericError handleApiAuthorizationException(Exception ex) {
         GenericError errorResponse = new GenericError()
             .setMessage(ex.getMessage());
         log.info("unauthorized request", ex);
@@ -35,8 +34,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(RecipientRequiredException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ResponseBody
-    protected GenericError handleRecipientRequiredException(Exception ex) {
+    protected @ResponseBody GenericError handleRecipientRequiredException(Exception ex) {
         GenericError errorResponse = new GenericError()
             .setMessage(ex.getMessage());
         log.info("empty recipient", ex);
@@ -45,11 +43,10 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({ EmailSenderException.class, EnrichmentDataAccessException.class, DataAccessException.class})
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ResponseBody
-    protected GenericError handleException(Exception ex) {
+    protected @ResponseBody GenericError handleApplicationException(Exception ex) {
         GenericError errorResponse = new GenericError()
             .setMessage(ex.getMessage());
-        log.error("internal server error", ex);
+        log.error("application exception", ex);
         return errorResponse;
     }
 
@@ -67,7 +64,13 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
-
+    @Override
+    protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        log.info("error happens", ex);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+            new GenericError().setMessage(ex.getMessage())
+        );
+    }
 }
 
 

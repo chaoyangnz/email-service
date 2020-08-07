@@ -72,7 +72,10 @@
             }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/GenericError"
+            }
           },
           "500": {
             "description": "Internal Server error",
@@ -154,17 +157,6 @@
         }
       }
     },
-    "GenericError": {
-      "type": "object",
-      "properties": {
-        "message": {
-          "type": "string"
-        },
-        "errors": {
-          "type": "object"
-        }
-      }
-    },
     "Result": {
       "type": "object",
       "properties": {
@@ -175,6 +167,17 @@
         "sentAt": {
           "type": "string",
           "format": "date-time"
+        }
+      }
+    },
+    "GenericError": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        },
+        "errors": {
+          "type": "object"
         }
       }
     }

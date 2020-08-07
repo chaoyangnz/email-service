@@ -50,6 +50,7 @@ public class EmailServiceIntegrationTest {
             {"message_empty_subject.json", 400},
             {"message_empty_to.json", 400},
             {"message_empty_body.json", 400},
+            {"message_invalid_body_type.json", 400},
             {"message_too_long_subject.json", 400},
             {"message_too_long_body.json", 400},
             {"message_empty_to_after_filter.json", 400},

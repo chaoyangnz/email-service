@@ -13,7 +13,7 @@ import javax.validation.constraints.Size;
 @Setter
 @Accessors(chain = true)
 public class Body {
-    @NotNull
+    @NotNull(message = "must be a valid type")
     private BodyType type;
     @NotBlank
     @Size(max = 5000)
