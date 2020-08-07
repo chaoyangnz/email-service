@@ -2,9 +2,11 @@ package emailservice.core.usercase;
 
 import com.rits.cloning.Cloner;
 import emailservice.core.exception.EmailSenderException;
+import emailservice.core.exception.RecipientRequiredException;
 import emailservice.core.model.Message;
 import emailservice.core.model.ProcessRecord;
 import emailservice.core.model.ProcessState;
+import emailservice.core.model.Recipient;
 import emailservice.core.model.Result;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -51,19 +53,35 @@ public class EmailService {
     }
 
     private Result doSend(Message message, boolean enrichBody, ProcessRecord processRecord) {
-        if (enrichBody) {
-            bodyEnrichers.stream().anyMatch(bodyEnricher -> bodyEnricher.enrich(message.getBody()));
-        }
-        if (enableFilter) {
-            recipientFilter.filter(message.getTo());
-            recipientFilter.filter(message.getCc());
-            recipientFilter.filter(message.getBcc());
-        }
+        applyBodyEnrichment(enrichBody, message);
+        applyRecipientFilter(message);
         processRecord.setMessage(snapshot(message)).setState(ProcessState.TRANSFORMED);
 
         String messageId = emailSender.send(message);
         processRecord.setExternalMessageId(messageId).setState(ProcessState.DISPATCHED);
         return new Result().setId(processRecord.getId()).setSentAt(Instant.now());
+    }
+
+    private void applyBodyEnrichment(final boolean enrichBody, final Message message) {
+        if (enrichBody) {
+            bodyEnrichers.stream().anyMatch(bodyEnricher -> bodyEnricher.enrich(message.getBody()));
+        }
+    }
+
+    private void applyRecipientFilter(final Message message) {
+        if (enableFilter) {
+            recipientFilter.filter(message.getTo());
+            recipientFilter.filter(message.getCc());
+            recipientFilter.filter(message.getBcc());
+        }
+
+        checkToRecipient(message);
+    }
+
+    private void checkToRecipient(final Message message) {
+        if (message.getTo().isEmpty()) {
+            throw new RecipientRequiredException("No recipient is provided or email domain is not whitelisted");
+        }
     }
 
     private Message snapshot(Message message) {

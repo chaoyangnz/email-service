@@ -34,7 +34,6 @@ public class EmailServiceIntegrationTest {
 
     private List<Object[]> valid;
     private List<Object[]> invalid;
-    private List<Object[]> error;
 
     @Before
     public void setup() {
@@ -53,9 +52,7 @@ public class EmailServiceIntegrationTest {
             {"message_empty_body.json", 400},
             {"message_too_long_subject.json", 400},
             {"message_too_long_body.json", 400},
-        });
-        error = Arrays.asList(new Object[][] {
-            {"message_empty_to_after_filter.json", 500},
+            {"message_empty_to_after_filter.json", 400},
         });
     }
 
@@ -126,25 +123,8 @@ public class EmailServiceIntegrationTest {
                 post("email").
             then().
                 statusCode(statusCode).
+                body("message", notNullValue()).
                 body("errors", notNullValue());
-        });
-    }
-
-    @Test
-    public void internalServerError() {
-        error.forEach((entry) -> {
-            String input = (String) entry[0];
-            int statusCode = (Integer) entry[1];
-            given().
-                contentType(MediaType.APPLICATION_JSON_VALUE).
-                accept(MediaType.APPLICATION_JSON_VALUE).
-                header(authHeader).
-                body(payload(input)).
-                when().
-                post("email").
-                then().
-                statusCode(statusCode).
-                body("message", notNullValue());
         });
     }
 

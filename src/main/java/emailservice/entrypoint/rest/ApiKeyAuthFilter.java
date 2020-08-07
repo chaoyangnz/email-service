@@ -1,5 +1,6 @@
 package emailservice.entrypoint.rest;
 
+import emailservice.core.exception.AuthorizationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -34,7 +35,6 @@ public class ApiKeyAuthFilter implements Filter {
         boolean authorised = !authorizationHeaderIsInvalid(authorizationHeader) && apiKeyVerified(authorizationHeader);
         if(!authorised) {
             res.sendError(HttpStatus.UNAUTHORIZED.value());
-            return;
         }
         chain.doFilter(request, response);
     }
