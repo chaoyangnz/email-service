@@ -6,7 +6,7 @@ plugins {
 	id 'jacoco'
 }
 
-group = 'com.fuel50'
+group = 'to.yang.chao'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 

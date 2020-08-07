@@ -24,7 +24,7 @@ docker run --name postgres -p 5432:5432 -d \
 ```
 docker run -name email-service -it \
     -p 8080:8080 \
-    -e SPRING_DATASOURCE_URL=jdbc:postgres://host.docker.internal:5432/emailservice \
+    -e SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5432/emailservice \
     -e SENDGRID_APIKEY=XXX \
     -e OPENWEATHER_APIKEY=xx \
     chaoyangnz/email-service
