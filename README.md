@@ -62,7 +62,8 @@ The testing can be run in different levels, I make unit tests, integration tests
 
 - Integration test
 
-I haven't used a mock server for SendGrid and OpenWeather, so you have to specify the environment variables to run integration test.
+I haven't used a mock server for SendGrid and OpenWeather, so you have to specify the environment variables to run integration test and hit the realistic external servers.
+Note: the tests will be run with a sandbox mode for SendGrid.
 
 ```
 SENDGRID_APIKEY=<change_me> OPENWEATHER_APIKEY=<change_me> ./gradlew test
