@@ -34,6 +34,7 @@ dependencies {
 	implementation 'io.springfox:springfox-swagger-ui:2.9.2'
 	implementation 'org.jsoup:jsoup:1.11.3'
 	implementation 'io.github.kostaskougios:cloning:1.10.3'
+	implementation 'com.auth0:java-jwt:3.10.3'
 	compile 'com.fasterxml.jackson.core:jackson-databind:2.9.7'
 	compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.7'
 	compile 'com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.9.7'

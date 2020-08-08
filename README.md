@@ -30,11 +30,11 @@ docker run --name postgres -p 5432:5432 -d \
 docker run -name email-service -it \
     -p 8080:8080 \
     -e SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5432/emailservice \
+    -e EMAILSERVICE_APIKEY_SECRET=<change_me> \
     -e SENDGRID_APIKEY=<change_me> \
     -e OPENWEATHER_APIKEY=<change_me> \
     -e EMAILSERVICE_RECIPIENTFILTER_ENABLE=true \
     -e EMAILSERVICE_RECIPIENTFILTER_DOMAIN=gmail.com \
-    -e EMAILSERVICE_APIKEY=<change_me> \
     chaoyangnz/email-service
 ```
 
@@ -45,7 +45,7 @@ For API Swagger documentation, go to http://localhost:8080/swagger-ui.html
 
 ### How to build your own
 
-You should have a Mysql running in `localhost:5432` and has a database named `emailservice`.
+You should have a Postgres running in `localhost:5432` and has a database named `emailservice`.
 
 Go to the repo root, and run `./gradlew bootRun`, it will run that API server in your local
 

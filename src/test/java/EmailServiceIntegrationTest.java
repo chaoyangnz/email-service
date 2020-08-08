@@ -39,7 +39,7 @@ public class EmailServiceIntegrationTest {
     public void setup() {
         RestAssured.port = port;
         RestAssured.basePath = "/";
-        authHeader = new Header("Authorization", "Bearer foo");
+        authHeader = new Header("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJlcy55YW5nLnRvIiwic3ViIjoiMTIzNDU2Nzg5MCIsIm5hbWUiOiJSYWtlbiIsImlhdCI6MTUxNjIzOTAyMn0.kx2YlPeSjtWgtuyPbULEEQyQvYsHLBhZAF0D_io3tzo");
         valid = Arrays.asList(new Object[][] {
             {"message.json", 202},
             {"message_full.json", 202},

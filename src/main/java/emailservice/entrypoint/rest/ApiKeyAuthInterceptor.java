@@ -1,8 +1,12 @@
 package emailservice.entrypoint.rest;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import emailservice.core.exception.AuthorizationException;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import javax.servlet.http.HttpServletRequest;
@@ -10,9 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 
 @Service
 public class ApiKeyAuthInterceptor extends HandlerInterceptorAdapter {
-
-    @Value("${emailservice.security.apiKey}")
-    private String apiKey;
+    @Value("${emailservice.apiKey.secret}")
+    private String apiKeySecret;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -31,6 +34,16 @@ public class ApiKeyAuthInterceptor extends HandlerInterceptorAdapter {
 
     private boolean apiKeyVerified(String authorizationHeader) {
         String apiKey = authorizationHeader.replace("Bearer ", "");
-        return this.apiKey.equals(apiKey);
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(apiKeySecret);
+            JWTVerifier verifier = JWT.require(algorithm)
+                .withIssuer("es.yang.to")
+                .build();
+            DecodedJWT jwt = verifier.verify(apiKey);
+            return true;
+        } catch (JWTVerificationException exception){
+            //Invalid signature/claims
+            return false;
+        }
     }
 }
