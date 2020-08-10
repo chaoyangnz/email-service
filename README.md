@@ -151,6 +151,11 @@ to our error code definition.
 For REST API request, we can also set more configs, like connection timeout, even we can have a retry mechanism to avoid
 important emails are unable to be delivered.
 
+Provide well-formatted error messages.
+  - categorise errors: system-level, budiness logic, request formatting and auth errors
+  - both machine-readable error code and human-readable messages
+  - carefully consider the scenarios either bubbling errors across bundaries or hiding internal details by returning more generic errors
+
 - Logging & Monitoring
 
 I should be able to refine the logging and make it production ready for monitoring.
