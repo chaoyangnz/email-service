@@ -164,3 +164,6 @@ Newrelic APM integration.
 
 MVC controller tests and persistence layer integration tests are missing.
 
+- SDK
+
+Providing SDKs for different language binding can be developers friendly. It eases the integration and shares the data models/typings which are pretty useful for some statically-typed languages.
