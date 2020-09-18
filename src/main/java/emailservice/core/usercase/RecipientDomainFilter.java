@@ -1,6 +1,7 @@
 package emailservice.core.usercase;
 
 import emailservice.core.model.Recipient;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -12,19 +13,14 @@ import static java.lang.String.format;
 /**
  * Filter out emails with domain not in the whitelist.
  */
-@Service
 @Slf4j
+@RequiredArgsConstructor
+@Service
 public class RecipientDomainFilter implements RecipientFilter {
     private static final Pattern EMAIL_PATTERN = Pattern.compile(Recipient.EMAIL_PATTERN);
 
+    @Value("${emailservice.recipientFilter.domain}")
     private final String whitelistDomain;
-
-    public RecipientDomainFilter(
-        @Value("${emailservice.recipientFilter.domain}")
-        final String whitelistDomain
-    ) {
-        this.whitelistDomain = whitelistDomain;
-    }
 
     @Override
     public void filter(List<Recipient> recipients) {

@@ -6,35 +6,22 @@ import emailservice.core.exception.RecipientRequiredException;
 import emailservice.core.model.Message;
 import emailservice.core.model.ProcessRecord;
 import emailservice.core.model.ProcessState;
-import emailservice.core.model.Recipient;
 import emailservice.core.model.Result;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.util.List;
 
+@RequiredArgsConstructor
 @Service
 public class EmailService {
-    private boolean enableFilter;
-
+    @Value("${emailservice.recipientFilter.enable}")
+    private final boolean enableFilter;
     private final EmailSender emailSender;
     private final List<BodyEnricher> bodyEnrichers;
     private final RecipientFilter recipientFilter;
     private final ProcessRecordDataProvider processRecordDataProvider;
-
-    public EmailService(
-        @Value("${emailservice.recipientFilter.enable}") final boolean enableFilter,
-        final EmailSender emailSender,
-        final List<BodyEnricher> bodyEnrichers,
-        final RecipientFilter recipientFilter,
-        final ProcessRecordDataProvider processRecordDataProvider
-        ) {
-        this.enableFilter = enableFilter;
-        this.emailSender = emailSender;
-        this.bodyEnrichers = bodyEnrichers;
-        this.recipientFilter = recipientFilter;
-        this.processRecordDataProvider = processRecordDataProvider;
-    }
 
     public Result send(Message message, boolean enrichBody) {
         ProcessRecord processRecord = new ProcessRecord().setCreatedAt(Instant.now())

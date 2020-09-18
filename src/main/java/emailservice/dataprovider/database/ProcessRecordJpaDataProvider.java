@@ -4,21 +4,17 @@ import emailservice.core.model.ProcessState;
 import emailservice.core.usercase.ProcessRecordDataProvider;
 import emailservice.core.model.ProcessRecord;
 import emailservice.dataprovider.database.entity.ProcessRecordEntity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+
+@RequiredArgsConstructor
 @Service
 public class ProcessRecordJpaDataProvider implements ProcessRecordDataProvider {
+    @Value("${emailservice.dataPrivacy.enable}")
     private final boolean enableDataPrivacy;
     private final ProcessRecordRepository processRecordRepository;
-
-    public ProcessRecordJpaDataProvider(
-        @Value("${emailservice.dataPrivacy.enable}") final boolean enableDataPrivacy,
-        final ProcessRecordRepository processRecordRepository
-    ) {
-        this.enableDataPrivacy = enableDataPrivacy;
-        this.processRecordRepository = processRecordRepository;
-    }
 
     @Override
     public ProcessRecord save(ProcessRecord record) {

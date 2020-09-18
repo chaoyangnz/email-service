@@ -16,7 +16,7 @@ import javax.validation.Validator;
 public class AppConfig implements WebMvcConfigurer {
 
     @Value("${emailservice.sendgrid.apiKey}")
-    private String sendGridApiKey;
+    private final String sendGridApiKey;
 
     @Bean
     public SendGrid sendGrid() {

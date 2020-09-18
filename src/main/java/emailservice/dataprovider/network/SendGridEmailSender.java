@@ -14,6 +14,7 @@ import emailservice.core.exception.EmailSenderException;
 import emailservice.core.usercase.EmailSender;
 import emailservice.core.model.Recipient;
 import emailservice.core.model.Message;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -23,31 +24,21 @@ import java.util.List;
 import java.util.stream.Collectors;
 import static java.lang.String.format;
 
-@Service
 @Slf4j
+@RequiredArgsConstructor
+@Service
 public class SendGridEmailSender implements EmailSender {
     private final static String MESSAGE_ID_HEADER = "X-Message-Id";
 
+    @Value("${emailservice.from.email}")
     private final String fromEmail;
+    @Value("${emailservice.from.name}")
     private final String fromName;
+    @Value("${emailservice.sendgrid.endpoint.send}")
     private final String sendGridSendEndpoint;
+    @Value("${emailservice.sendgrid.sandbox}")
     private final boolean sandbox;
-
     private final SendGrid sendGrid;
-
-    public SendGridEmailSender(
-        @Value("${emailservice.from.email}") final String fromEmail,
-        @Value("${emailservice.from.name}") final String fromName,
-        @Value("${emailservice.sendgrid.endpoint.send}") final String sendGridSendEndpoint,
-        @Value("${emailservice.sendgrid.sandbox}") final boolean sandbox,
-        final SendGrid sendGrid
-    ) {
-        this.fromEmail = fromEmail;
-        this.fromName = fromName;
-        this.sendGridSendEndpoint = sendGridSendEndpoint;
-        this.sandbox = sandbox;
-        this.sendGrid = sendGrid;
-    }
 
     @Override
     public String send(Message message) {
