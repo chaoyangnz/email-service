@@ -1,5 +1,20 @@
 # email service
 
+I am going to make this small service as an example of how best practices can be applied to a Spring Boot application.
+
+Opionionated:
+- Clean architecture down to the earth
+- Twelve-factor App configuration
+- DB migration
+- Testablility
+- Spring Boot best practice and Spring Security pitfalls
+    * Configuration as Service, discourage `@Value` everywhere
+    * Constructure injection always and final fields for immutability like Angular DI is doing. Never @Autwired, @Resource, @Inject !!
+    * Discourage Spring configuration annotions everywhere, minimal and only when necessary.
+    * Swagger Design first, prefer YAML to generate Swagger UI rather than Swagger annotations polluting Java code
+    * Seperate WebSecurityConfig for URL patterns. Never apply security filters for unprotected resources!
+    * Disable unnecessary security filters
+
 ## Run the applications
 
 ### Demo
