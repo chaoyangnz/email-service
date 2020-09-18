@@ -19,9 +19,9 @@ Opionionated:
 
 ### Demo
 
-Access the application in the cloud: https://es.yang.to 
+Access the application in the cloud: https://email-api.bitsflux.com 
 
-API Swagger UI: https://es.yang.to/swagger-ui.html
+API Swagger UI: https://email-api.bitsflux.com/swagger-ui.html
 
 Note:
 - the application is configured with `gmail.com` domain whitelisted.
