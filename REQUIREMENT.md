@@ -1,4 +1,3 @@
-README.md
 Implement a Spring Boot REST API which allows sending an email to one or more recipients. 
 Email delivery should be done via sendgrid.com. You can signup for a free trial account for your testing here. 
 You can generate a starter Spring Boot application from start.spring.io. Please implement service in Java 8 and use whichever build tool (Gradle / Maven) you feel most comfortable with. 
