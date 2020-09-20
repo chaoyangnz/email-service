@@ -58,7 +58,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         ex.getBindingResult().getAllErrors().forEach((error) -> {
             String fieldName = ((FieldError) error).getField();
             String errorMessage = error.getDefaultMessage();
-            errorResponse.getErrors().put(fieldName, errorMessage);
+            errorResponse.getValidationDetails().put(fieldName, errorMessage);
         });
         log.info("input validation failed", ex);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);

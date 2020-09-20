@@ -14,7 +14,7 @@
     }
   },
   "host": "",
-  "basePath": "/",
+  "basePath": "/api",
   "tags": [
     {
       "name": "email",
@@ -94,7 +94,7 @@
   },
   "securityDefinitions": {
     "ApiKeyAuth": {
-      "description": "Bearer Apikey",
+      "description": "Apikey <you_key_here>",
       "type": "apiKey",
       "name": "Authorization",
       "in": "header"
@@ -173,10 +173,13 @@
     "GenericError": {
       "type": "object",
       "properties": {
+        "statusCode": {
+          "type": "string"
+        },
         "message": {
           "type": "string"
         },
-        "errors": {
+        "validationDetails": {
           "type": "object"
         }
       }
@@ -184,6 +187,6 @@
   },
   "externalDocs": {
     "description": "Email Service API",
-    "url": "https://es.yang.to"
+    "url": "https://email-api.bitsflux.com"
   }
 }

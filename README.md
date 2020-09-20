@@ -9,10 +9,10 @@ Opionionated:
 - Testablility
 - Spring Boot best practice and Spring Security pitfalls
     * Configuration as Service, discourage `@Value` everywhere
-    * Constructure injection always and final fields for immutability like Angular DI is doing. Never @Autwired, @Resource, @Inject !!
-    * Discourage Spring configuration annotions everywhere, minimal and only when necessary.
+    * Constructor injection always and final fields for immutability like Angular DI is doing. Use @Autwired, @Resource, @Inject as little as possible !!
+    * Discourage Spring configuration annotations everywhere, minimal and only when necessary.
     * Swagger Design first, prefer YAML to generate Swagger UI rather than Swagger annotations polluting Java code
-    * Seperate WebSecurityConfig for URL patterns. Never apply security filters for unprotected resources!
+    * Separate WebSecurityConfig for URL patterns. Never apply security filters for unprotected resources!
     * Disable unnecessary security filters
 
 ## Run the applications
@@ -26,7 +26,7 @@ API Swagger UI: https://email-api.bitsflux.com/swagger-ui.html
 Note:
 - the application is configured with `gmail.com` domain whitelisted.
 So if you feel like a different domain name, I can do a redeployment with a different environment variable. 
-- API key is needed for auth - `Authorization: Bearer whatever_your_api_key` 
+- API key is needed for auth - `Authorization: Apikey whatever_your_api_key` 
 
 ### Quick start with docker
 
